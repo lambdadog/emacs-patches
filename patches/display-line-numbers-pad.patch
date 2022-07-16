@@ -1,0 +1,35 @@
+diff --git src/xdisp.c src/xdisp.c
+index 4089525e10..a76a2f58cb 100644
+--- src/xdisp.c
++++ src/xdisp.c
+@@ -24010,6 +24010,16 @@ maybe_produce_line_number (struct it *it)
+ 	}
+     }
+ 
++  /* Add an extra space after.  */
++  if (display_line_numbers_pad)
++    {
++      tem_it.face_id = DEFAULT_FACE_ID;
++      tem_it.c = tem_it.char_to_display = ' ';
++      tem_it.len = 1;
++      SET_TEXT_POS (tem_it.position, -1, -1);
++      PRODUCE_GLYPHS (&tem_it);
++    }
++
+   inhibit_free_realized_faces = save_free_realized_faces;
+ 
+   /* Record the width in pixels we need for the line number display.  */
+@@ -36561,6 +36571,13 @@ It has no effect when set to 0, or when line numbers are not absolute.  */);
+   DEFSYM (Qdisplay_line_numbers_offset, "display-line-numbers-offset");
+   Fmake_variable_buffer_local (Qdisplay_line_numbers_offset);
+ 
++  DEFVAR_BOOL ("display-line-numbers-pad", display_line_numbers_pad,
++    doc: /* Non-nil means there is a space of padding between the line
++numbers and buffer text.  */);
++  display_line_numbers_pad = false;
++  DEFSYM (Qdisplay_line_numbers_pad, "display-line-numbers-pad");
++  Fmake_variable_buffer_local (Qdisplay_line_numbers_pad);
++
+   DEFVAR_BOOL ("display-fill-column-indicator", display_fill_column_indicator,
+     doc: /* Non-nil means display the fill column indicator.
+ If you set this non-nil, make sure `display-fill-column-indicator-character'
